@@ -85,7 +85,7 @@ export async function addEvent(
  * Add many events at once. Firestore batches are limited to 500 writes,
  * so we chunk the list to stay safe.
  */
-eexport async function addEventsBatch(
+export async function addEventsBatch(
   events: Omit<CalendarEvent, "id">[],
 ): Promise<number> {
   if (!isFirebaseConfigured || !db) {
