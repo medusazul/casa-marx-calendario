@@ -69,8 +69,14 @@ export async function addEvent(
   if (!isFirebaseConfigured || !db) {
     throw new Error("Firebase no está configurado.")
   }
+  
+  // Filtrar campos undefined
+  const cleanEvent = Object.fromEntries(
+    Object.entries(event).filter(([_, value]) => value !== undefined)
+  )
+  
   await addDoc(collection(db, COLLECTION), {
-    ...event,
+    ...cleanEvent,
     createdAt: serverTimestamp(),
   })
 }
@@ -79,7 +85,7 @@ export async function addEvent(
  * Add many events at once. Firestore batches are limited to 500 writes,
  * so we chunk the list to stay safe.
  */
-export async function addEventsBatch(
+eexport async function addEventsBatch(
   events: Omit<CalendarEvent, "id">[],
 ): Promise<number> {
   if (!isFirebaseConfigured || !db) {
@@ -92,7 +98,11 @@ export async function addEventsBatch(
     const chunk = events.slice(i, i + CHUNK)
     for (const event of chunk) {
       const ref = doc(collection(db, COLLECTION))
-      batch.set(ref, { ...event, createdAt: serverTimestamp() })
+      // Filtrar campos undefined
+      const cleanEvent = Object.fromEntries(
+        Object.entries(event).filter(([_, value]) => value !== undefined)
+      )
+      batch.set(ref, { ...cleanEvent, createdAt: serverTimestamp() })
     }
     await batch.commit()
     saved += chunk.length
