@@ -110,9 +110,18 @@ export async function addEventsBatch(
   return saved
 }
 
-export async function deleteEvent(id: string): Promise<void> {
+export async function deleteEvent(id: string, editKey?: string): Promise<void> {
   if (!isFirebaseConfigured || !db) {
     throw new Error("Firebase no está configurado.")
   }
+  
+  // Validar clave de edición si se proporciona
+  if (editKey) {
+    const expectedKey = process.env.NEXT_PUBLIC_EDIT_PASSWORD
+    if (!expectedKey || editKey !== expectedKey) {
+      throw new Error("Clave de edición incorrecta")
+    }
+  }
+  
   await deleteDoc(doc(db, COLLECTION, id))
 }

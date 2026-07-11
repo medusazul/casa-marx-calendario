@@ -22,14 +22,19 @@ export function DayDetail({
 }) {
   const [deletingId, setDeletingId] = useState<string | null>(null)
 
-  async function handleDelete(id: string) {
-    setDeletingId(id)
-    try {
-      await onDelete(id)
-    } finally {
-      setDeletingId(null)
-    }
+ async function handleDelete(id: string) {
+  const editKey = prompt("Ingresa la clave de edición:")
+  if (!editKey) return
+  
+  setDeletingId(id)
+  try {
+    await onDelete(id, editKey)
+  } catch (error) {
+    alert(error instanceof Error ? error.message : "Error al borrar el evento")
+  } finally {
+    setDeletingId(null)
   }
+}
 
   return (
     <div className="fixed inset-0 z-50 flex flex-col justify-end">
