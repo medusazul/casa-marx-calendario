@@ -59,7 +59,7 @@
   --popover-foreground: oklch(0.08 0.01 45);
   
   /* Primary: Azul Marino #1e3a8a */
-  --primary: oklch(0.38 0.15 260);
+  --primary: oklch(0.60 0.25 320);
   --primary-foreground: oklch(0.99 0.01 85);
   
   /* Secondary: Naranja #ea580c */
@@ -174,9 +174,11 @@
 
 @layer base {
   * {
-    @apply border-border outline-ring/50;
+    border-color: var(--border);
+    outline-color: var(--ring);
   }
   body {
-    @apply bg-background text-foreground;
+    background-color: var(--background);
+    color: var(--foreground);
   }
 }

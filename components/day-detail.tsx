@@ -18,7 +18,7 @@ export function DayDetail({
   editMode: boolean
   onClose: () => void
   onAddForDay: (dateKey: string) => void
-  onDelete: (id: string) => Promise<void>
+  onDelete: (id: string, editKey: string) => Promise<void>
 }) {
   const [deletingId, setDeletingId] = useState<string | null>(null)
 
